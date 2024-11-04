@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronômetro até encontrar meu amor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('./WhatsApp\ Image\ 2024-11-04\ at\ 17.52.43.jpeg'); /* Substitua pelo caminho da sua imagem */
+            background-size: contain; /* Ajusta a imagem para caber no contêiner */
+            background-repeat: no-repeat; /* Não repetir a imagem */
+            background-position: center; /* Centraliza a imagem */
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7); /* Torna o fundo um pouco mais escuro */
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%; /* Largura responsiva */
+            max-width: 350px; /* Largura máxima para telas maiores */
+        }
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        .description {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+        .timer {
+            font-size: 2em;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em; /* Tamanho reduzido em telas menores */
+            }
+            .description {
+                font-size: 1.2em; /* Tamanho reduzido em telas menores */
+            }
+            .timer {
+                font-size: 1.5em; /* Tamanho reduzido em telas menores */
+            }
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cronômetro até encontrar meu amor</h1>
+        <div class="description">Contando o tempo até nosso encontro</div>
+        <div class="timer" id="timer">Carregando...</div>
+    </div>
+
+    <script>
+        const countdownDate = new Date('2024-12-25T00:00:00-03:00'); // Ajuste para seu fuso horário (GMT-3)
+        const timerElement = document.getElementById('timer');
+
+        // Salvar a data de contagem no localStorage
+        localStorage.setItem('countdownDate', countdownDate.toISOString());
+
+        const updateTimer = () => {
+            const now = new Date().getTime();
+            const storedDate = localStorage.getItem('countdownDate');
+
+            // Usar a data armazenada se existir
+            const targetDate = storedDate ? new Date(storedDate).getTime() : countdownDate;
+
+            const distance = targetDate - now;
+
+            // Cálculo de dias, horas, minutos e segundos
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                timerElement.innerHTML = "Finalmente juntos!";
+            }
+        };
+
+        const interval = setInterval(updateTimer, 1000);
+        updateTimer(); // Inicializa o cronômetro
+    </script>
+</body>
+</html>
