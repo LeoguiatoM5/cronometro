@@ -45,6 +45,24 @@
             opacity: 0.8;
         }
 
+        .highlight {
+            font-size: 1.0em; /* Tamanho padrão para telas maiores */
+            font-weight: bold; /* Negrito */
+            color: red; /* Cor inicial */
+            animation: flashColors 1s infinite; /* Animação de mudança de cores */
+            text-align: center; /* Centralizado */
+            margin: 10px 0; /* Espaçamento superior e inferior */
+        }
+        
+        /* Animação de mudança de cores */
+        @keyframes flashColors {
+            0% { color: red; }
+            25% { color: orange; }
+            50% { color: yellow; }
+            75% { color: green; }
+            100% { color: blue; }
+        }
+
         /* Responsividade */
         @media (max-width: 600px) {
             h1 {
@@ -57,6 +75,16 @@
                 font-size: 1.5em; /* Tamanho reduzido em telas menores */
             }
         }
+
+
+
+        @media (max-width: 600px) {
+            .highlight {
+                font-size: 1.5em; /* Tamanho menor para dispositivos pequenos */
+                text-align: center; /* Mantém centralizado */
+                margin: 5px 0; /* Margem menor para dispositivos pequenos */
+            }
+        }
     </style>
 </head>
 <body>
@@ -66,6 +94,9 @@
         <div class="timer" id="timer">Carregando...</div>
         <div class="quote" id="quote"></div> <!-- Exibe a frase amorosa -->
     </div>
+
+    <!-- Script para Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
         const countdownDate = new Date('2024-12-18T00:00:00-03:00'); // Ajuste para seu fuso horário (GMT-3)
@@ -539,6 +570,28 @@
             quoteElement.innerHTML = `"${quote.text}"<br>— ${quote.author}`;
         }
 
+        // Animação de fogos de artifício
+        function launchFireworks() {
+            const duration = 100 * 1000; // 5 segundos
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 4,
+                    angle: Math.random() * 360,
+                    spread: 55,
+                    origin: {
+                        x: Math.random(),
+                        y: Math.random() - 0.2 // Evita que caia fora da tela
+                    }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+
         // Inicializar o cronômetro
         const updateTimer = () => {
             const now = new Date().getTime();
@@ -555,8 +608,16 @@
             timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
             if (distance < 0) {
+                // Limpa a frase amorosa
                 clearInterval(interval);
-                timerElement.innerHTML = "Finalmente juntos!";
+                timerElement.innerHTML = `
+                    <span class="highlight">
+                        Finalmente juntos! Meu amor, eu te amo. Você é meu maior tesouro. Amo cada pedacinho seu.
+                    </span>`;
+                    launchFireworks();
+                    quotesElement.innerHTML = '';
+                  
+                // Inicia os fogos de artifício
             }
         };
 
